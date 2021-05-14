@@ -19,17 +19,28 @@ class DeadlinedReminder(Iterable, ABC):
         pass
 
     # this is to
+    # @classmethod
+    # def __subclasshook__(cls, subclass):
+    #     if cls is not DeadlinedReminder:
+    #         return NotImplemented
+
+    #     def attr_in_hierarchy(attr):
+    #         return any(attr in superclass.__dict__ for superclass in subclass.__mro__)
+
+    #     if not(attr_in_hierarchy(attr) for attr in ('__iter__', 'is_due')):
+    #         return NotImplemented
+
+    #     return True
+
     @classmethod
     def __subclasshook__(cls, subclass):
         if cls is not DeadlinedReminder:
             return NotImplemented
 
         def attr_in_hierarchy(attr):
-            return any(attr in superclass.__dict__ for superclass in subclass.__mro__)
-
-        if not(attr_in_hierarchy(attr) for attr in ('__iter__', 'is_due')):
+            return any(attr in SuperClass.__dict__ for SuperClass in subclass.__mro__)
+        if not all(attr_in_hierarchy(attr) for attr in ('__iter__', 'is_due')):
             return NotImplemented
-
         return True
 
 
